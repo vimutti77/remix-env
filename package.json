@@ -1,7 +1,8 @@
 {
   "name": "remix-env",
   "description": "Easy way to use process.env in your Remix apps",
-  "version": "0.0.2",
+  "version": "0.0.3",
+  "sideEffects": false,
   "main": "./build/index.js",
   "module": "./build/index.mjs",
   "typings": "./build/index.d.ts",
@@ -12,6 +13,7 @@
       "types": "./build/index.d.ts"
     }
   },
+  "files": ["./build"],
   "scripts": {
     "build": "npm run build:cjs && npm run build:esm && npm run build:type",
     "build:cjs": "esbuild --outdir=build --platform=node --format=cjs src/index.ts",

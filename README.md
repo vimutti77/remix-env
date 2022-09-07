@@ -4,9 +4,10 @@ Easy way to use process.env in your Remix apps
 ## Setup
 
 ### `app/entry.server.tsx`
-1. Add `createEnv` before `handleRequest`
-2. Using `injectEnv` to `markup`
-3. Replace the reponse with the result from `injectEnv`
+1. Run `npm install remix-env` or `yarn add remix-env`
+2. Add `createEnv` before `handleRequest`
+3. Using `injectEnv` to `markup`
+4. Replace the reponse with the result from `injectEnv`
 
 ```diff
 import { renderToString } from "react-dom/server";
@@ -55,7 +56,7 @@ export default function IndexRoute() {
 }
 ```
 
-## Setting
+## Configuration
 
 By default this library will inject all environment variables with prefix `PUBLIC_ENV_` to the browser.
 
