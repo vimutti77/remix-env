@@ -1,0 +1,33 @@
+{
+  "name": "remix-env",
+  "description": "Easy way to use process.env in your Remix apps",
+  "version": "0.0.1",
+  "main": "./build/index.js",
+  "module": "./build/index.mjs",
+  "typings": "./build/index.d.ts",
+  "scripts": {
+    "build": "npm run build:cjs && npm run build:esm && npm run build:type",
+    "build:cjs": "esbuild --outdir=build --platform=node --format=cjs src/index.ts",
+    "build:esm": "esbuild --out-extension:.js=.mjs --outdir=build --platform=node --format=esm src/index.ts",
+    "build:type": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vimutti77/remix-env.git"
+  },
+  "keywords": [
+    "remix",
+    "env"
+  ],
+  "author": "vimutti77",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vimutti77/remix-env/issues"
+  },
+  "homepage": "https://github.com/vimutti77/remix-env#readme",
+  "devDependencies": {
+    "@types/node": "^18.7.15",
+    "esbuild": "^0.15.7",
+    "typescript": "^4.8.2"
+  }
+}
