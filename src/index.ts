@@ -1,15 +1,13 @@
 declare global {
-  var APP_ENV: Env;
+  interface Window {
+    APP_ENV: Env;
+  }
 }
 
 type Env = Record<string, string | undefined>;
 
-export function setUpEnv() {
-  globalThis["APP_ENV"] = process.env;
-}
-
 export function getEnv() {
-  return globalThis["APP_ENV"];
+  return typeof window === "undefined" ? process.env : window["APP_ENV"];
 }
 
 export function injectEnv(

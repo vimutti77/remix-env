@@ -4,23 +4,7 @@ Easy way to use process.env in your Remix apps
 ## Setup
 
 1. Run `npm install remix-env` or `yarn add remix-env`
-2. Add `setupEnv` in `remix.config.js`
-3. Using `injectEnv` to `markup` in `entry.server.tsx`
-
-#### remix.config.js
-```diff
-+ const { setUpEnv } = require('remix-env')
-
-+ setUpEnv()
-/**
- * @type {import('@remix-run/dev').AppConfig}
- */
-module.exports = {
-  // any configa
-}
-
-```
-
+2. Using `injectEnv` to `markup` in `entry.server.tsx`
 
 #### entry.server.tsx
 ```diff
