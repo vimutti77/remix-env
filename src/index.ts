@@ -21,8 +21,12 @@ export function injectEnv(
     ([key, value]) =>
       filterPublicEnv?.(key, value) ?? key.startsWith("PUBLIC_ENV_")
   );
+  const publicEnv = {
+    NODE_ENV: env.NODE_ENV,
+    ...Object.fromEntries(filteredEnvEntries),
+  };
 
-  const stringifyEnv = JSON.stringify(Object.fromEntries(filteredEnvEntries));
+  const stringifyEnv = JSON.stringify(publicEnv);
   const encodedEnv = Buffer.from(stringifyEnv).toString("base64");
   const envScript = `<script>window['APP_ENV']=JSON.parse(atob("${encodedEnv}"))</script>`;
   const htmlWithEnv = html.replace("</head>", `${envScript}</head>`);
