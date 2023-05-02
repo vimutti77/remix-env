@@ -74,11 +74,11 @@ export default function IndexRoute() {
 
 By default this library will inject all environment variables with prefix `PUBLIC_ENV_` to the browser.
 
-But you can customize it by provide the filter function at `createEnv`.
+But you can customize it by provide the filter function at `injectEnv`.
 
 ```typescript
-const publicEnv = createEnv({ filterEnv: (key, value) => {
+const publicEnv = injectEnv(markup, (key, value) => {
   // Only env that starts with PUBLIC_ENV_
   return key.startsWith("PUBLIC_ENV_");
-})
+)
 ```
