@@ -44,13 +44,15 @@ export default function handleRequest(
 
 ## Usage
 
-Now, You can use the `process.env` directly
+Now, You can use the `getEnv` to get your env
 ```tsx
+const env = getEnv()
+
 // app/routes/index.tsx
 export default function IndexRoute() {
   return (
     <div>
-      {process.env.PUBLIC_ENV_FOO}
+      {env.PUBLIC_ENV_FOO}
     </div>
   );
 }

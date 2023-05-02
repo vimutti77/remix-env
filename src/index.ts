@@ -1,6 +1,10 @@
-export const createEnv = ({
+declare global {
+  var APP_ENV: Record<string, string>;
+}
+
+export function createEnv({
   filterEnv,
-}: { filterEnv?: (key: string, value?: string) => boolean } = {}) => {
+}: { filterEnv?: (key: string, value?: string) => boolean } = {}) {
   const filteredEnvEntries = Object.entries(process.env).filter(
     ([key, value]) => {
       if (filterEnv) return filterEnv(key, value);
@@ -8,17 +12,21 @@ export const createEnv = ({
     }
   );
 
-  const stringifyEnv = JSON.stringify({
+  return {
     NODE_ENV: process.env.NODE_ENV,
     ...Object.fromEntries(filteredEnvEntries),
-  });
+  };
+}
 
+export function injectEnv(html: string, env: Record<string, string>) {
+  globalThis["APP_ENV"] = env;
+  const stringifyEnv = JSON.stringify(env);
   const encodedEnv = Buffer.from(stringifyEnv).toString("base64");
-  return encodedEnv;
-};
-
-export const injectEnv = (html: string, env: string) => {
-  const envScript = `<script>window.process={env:JSON.parse(atob("${env}"))}</script>`;
+  const envScript = `<script>window['APP_ENV']=JSON.parse(atob("${encodedEnv}"))</script>`;
   const htmlWithEnv = html.replace("</head>", `${envScript}</head>`);
   return htmlWithEnv;
-};
+}
+
+export function getEnv() {
+  return globalThis["APP_ENV"];
+}
