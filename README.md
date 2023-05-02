@@ -5,20 +5,45 @@ Easy way to use process.env in your Remix apps
 
 ### `app/entry.server.tsx`
 1. Run `npm install remix-env` or `yarn add remix-env`
-2. Add `createEnv` before `handleRequest`
-3. Using `injectEnv` to `markup`
-4. Replace the reponse with the result from `injectEnv`
+2. Add `setupEnv` in `remix.config.js`
+3. Using `injectEnv` to `markup` in `entry.server.tsx`
 
 ```diff
+// remix.config.js
++ const { setUpEnv } = require('remix-env')
+
++ setUpEnv()
+/**
+ * @type {import('@remix-run/dev').AppConfig}
+ */
+module.exports = {
+  ignoredRouteFiles: ['.*', '**/@*', '**/@*/**', '**/*.test.*'],
+  serverDependenciesToBundle: [
+    'array-move',
+    'swiper',
+    'swiper/react',
+    'swiper/react/swiper-react.js',
+    'ssr-window',
+    'ssr-window/ssr-window.esm.js',
+    'dom7',
+  ],
+  // appDirectory: "app",
+  // assetsBuildDirectory: "public/build",
+  // serverBuildPath: "build/index.js",
+  // publicPath: "/build/",
+}
+
+```
+
+```diff
+// remix.config.js
 import { renderToString } from "react-dom/server";
 import type {
   EntryContext,
   HandleDataRequestFunction,
 } from "@remix-run/node"; // or cloudflare/deno
 import { RemixServer } from "@remix-run/react";
-+ import { createEnv, injectEnv } from 'remix-env'
-
-+ const publicEnv = createEnv()
++ import { injectEnv } from 'remix-env'
 
 export default function handleRequest(
   request: Request,
@@ -30,7 +55,7 @@ export default function handleRequest(
     <RemixServer context={remixContext} url={request.url} />
   );
 
-+   const markUpWithEnv = injectEnv(markup, publicEnv)
++   const markUpWithEnv = injectEnv(markup)
 
   responseHeaders.set("Content-Type", "text/html");
 
