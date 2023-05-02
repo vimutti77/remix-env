@@ -8,8 +8,8 @@ Easy way to use process.env in your Remix apps
 2. Add `setupEnv` in `remix.config.js`
 3. Using `injectEnv` to `markup` in `entry.server.tsx`
 
+#### remix.config.js
 ```diff
-// remix.config.js
 + const { setUpEnv } = require('remix-env')
 
 + setUpEnv()
@@ -17,26 +17,14 @@ Easy way to use process.env in your Remix apps
  * @type {import('@remix-run/dev').AppConfig}
  */
 module.exports = {
-  ignoredRouteFiles: ['.*', '**/@*', '**/@*/**', '**/*.test.*'],
-  serverDependenciesToBundle: [
-    'array-move',
-    'swiper',
-    'swiper/react',
-    'swiper/react/swiper-react.js',
-    'ssr-window',
-    'ssr-window/ssr-window.esm.js',
-    'dom7',
-  ],
-  // appDirectory: "app",
-  // assetsBuildDirectory: "public/build",
-  // serverBuildPath: "build/index.js",
-  // publicPath: "/build/",
+  // any configa
 }
 
 ```
 
+
+#### entry.server.tsx
 ```diff
-// remix.config.js
 import { renderToString } from "react-dom/server";
 import type {
   EntryContext,
