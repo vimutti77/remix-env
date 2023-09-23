@@ -1,7 +1,7 @@
 {
   "name": "remix-env",
   "description": "Easy way to use process.env in your Remix apps",
-  "version": "2.0.4",
+  "version": "3.0.0-beta.1",
   "sideEffects": false,
   "main": "./build/index.js",
   "module": "./build/index.mjs",
@@ -13,13 +13,15 @@
       "types": "./build/index.d.ts"
     }
   },
-  "files": ["./build"],
+  "files": [
+    "./build"
+  ],
   "scripts": {
     "release": "npm run build && npm publish",
     "release:beta": "npm run build && npm publish --tag beta",
     "build": "npm run build:cjs && npm run build:esm && npm run build:type",
-    "build:cjs": "esbuild --outdir=build --platform=node --format=cjs src/index.ts",
-    "build:esm": "esbuild --out-extension:.js=.mjs --outdir=build --platform=node --format=esm src/index.ts",
+    "build:cjs": "esbuild --outdir=build --platform=node --format=cjs src/index.tsx",
+    "build:esm": "esbuild --out-extension:.js=.mjs --outdir=build --platform=node --format=esm src/index.tsx",
     "build:type": "tsc"
   },
   "repository": {
@@ -36,8 +38,13 @@
     "url": "https://github.com/vimutti77/remix-env/issues"
   },
   "homepage": "https://github.com/vimutti77/remix-env#readme",
+  "peerDependencies": {
+    "react": ">18.0.0",
+    "react-dom": ">18.0.0"
+  },
   "devDependencies": {
     "@types/node": "^18.7.15",
+    "@types/react": "^18.2.22",
     "esbuild": "^0.15.7",
     "typescript": "^4.8.2"
   }

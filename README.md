@@ -4,18 +4,22 @@ Easy way to use process.env in your Remix apps
 ## Setup
 
 1. Run `npm install remix-env` or `yarn add remix-env`
-2. Using `injectEnv` to `markup` in `entry.server.tsx`
-
+2. Add `EnvProvider` in `entry.client.tsx` and `entry.server.tsx`
+#### entry.client.tsx
+```diff
+startTransition(() => {
+  hydrateRoot(
+    document,
+    <StrictMode>
++     <EnvProvider>
+        <RemixBrowser />
++     </EnvProvider>
+    </StrictMode>
+  );
+});
+```
 #### entry.server.tsx
 ```diff
-import { renderToString } from "react-dom/server";
-import type {
-  EntryContext,
-  HandleDataRequestFunction,
-} from "@remix-run/node"; // or cloudflare/deno
-import { RemixServer } from "@remix-run/react";
-+ import { injectEnv } from 'remix-env'
-
 export default function handleRequest(
   request: Request,
   responseStatusCode: number,
@@ -23,18 +27,29 @@ export default function handleRequest(
   remixContext: EntryContext
 ) {
   const markup = renderToString(
-    <RemixServer context={remixContext} url={request.url} />
++   <EnvProvider>
+      <RemixServer context={remixContext} url={request.url} />
++   </EnvProvider>
   );
-
-+   const markUpWithEnv = injectEnv(markup)
-
-  responseHeaders.set("Content-Type", "text/html");
-
--  return new Response("<!DOCTYPE html>" + markUp, {
-+  return new Response("<!DOCTYPE html>" + markUpWithEnv, {
-    status: responseStatusCode,
-    headers: responseHeaders,
-  });
+}
+```
+3. Add `InjectEnv` in `root.tsx`
+#### root.tsx
+```diff
+export function Root() {
+  return (
+    <html lang="en">
+      <head>
+        <Meta />
+        <Links />
+      </head>
+      <body>
++       <InjectEnv />
+        <Outlet />
+        <Scripts />
+      </body>
+    </html>
+  );
 }
 ```
 
@@ -44,7 +59,7 @@ Now, You can use the `getEnv` to get your env
 ```tsx
 const env = getEnv()
 
-// app/routes/index.tsx
+// app/routes/_index.tsx
 export default function IndexRoute() {
   return (
     <div>
@@ -58,11 +73,10 @@ export default function IndexRoute() {
 
 By default this library will inject all environment variables with prefix `PUBLIC_ENV_` to the browser.
 
-But you can customize it by provide the filter function at `injectEnv`.
+But you can customize it by provide the filter function at `EnvProvider`.
 
-```typescript
-const publicEnv = injectEnv(markup, (key, value) => {
-  // Only env that starts with PUBLIC_ENV_
-  return key.startsWith("PUBLIC_ENV_");
-)
+```tsx
+<EnvProvider filter={(key, value) => key.startsWith("PUBLIC_ENV_")}>
+  ...
+</EnvProvider>
 ```
